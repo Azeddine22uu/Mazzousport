@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mazzou Sport — نتائج المباريات وتوقعات الغد</title>
+  <meta name="description" content="Mazzou Sport - موقع عربي لنتائج المباريات، تحليلات وتوقعات يومية للمباريات من جميع الدوريات العالمية.">
+  <style>
+    :root{--bg:#ffffff;--muted:#f4f6fb;--accent:#0b63d6;--text:#111;--muted-text:#666}
+    body{margin:0;font-family:Tahoma, Arial, sans-serif;background:var(--muted);color:var(--text)}
+    .container{max-width:1100px;margin:18px auto;padding:16px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:64px;height:64px;background:var(--accent);border-radius:8px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+    nav{display:flex;gap:8px;align-items:center}
+    .nav-btn{background:#fff;padding:8px 12px;border-radius:8px;border:1px solid #e8eef9;text-decoration:none;color:var(--text);font-weight:600}
+    .search{display:flex;gap:8px}
+    input[type=search]{padding:8px 10px;border-radius:8px;border:1px solid #ddd}
+    button{background:var(--accent);color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
+
+    .grid{display:grid;grid-template-columns:1fr 340px;gap:16px;margin-top:18px}
+    .card{background:#fff;padding:14px;border-radius:10px;border:1px solid #e9eef6}
+    h2{margin:0 0 10px}
+
+    /* live scores box */
+    .live-box{height:420px;overflow:auto}
+    .prediction-table{width:100%;border-collapse:collapse}
+    .prediction-table th,.prediction-table td{padding:10px;border-bottom:1px solid #f0f3f8;text-align:center}
+    .percent{font-weight:800;color:var(--accent)}
+
+    footer{margin-top:18px;text-align:center;color:var(--muted-text);font-size:14px}
+
+    @media (max-width:900px){.grid{grid-template-columns:1fr;}.logo{width:48px;height:48px}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">MS</div>
+        <div>
+          <div style="font-weight:800">Mazzou Sport</div>
+          <div style="font-size:13px;color:var(--muted-text)">نتائج المباريات - تحليلات وتوقعات يومية</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center">
+        <nav>
+          <a class="nav-btn" href="#leagues">الدوريات</a>
+          <a class="nav-btn" href="#live">المباشر</a>
+          <a class="nav-btn" href="#predictions">توقعات الغد</a>
+        </nav>
+        <div class="search">
+          <input id="q" type="search" placeholder="ابحث عن فريق أو مباراة...">
+          <button onclick="doSearch()">ابحث</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section>
+        <div class="card" id="leagues">
+          <h2>الدوريات التي نغطيها</h2>
+          <p style="color:var(--muted-text)">نسخة شاملة تتضمن: الدوري الإنجليزي، الإسباني، الإيطالي، دوري أبطال أوروبا، الدوري المغربي، والدوريات العالمية الأخرى.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+            <span class="nav-btn">الدوري الإنجليزي</span>
+            <span class="nav-btn">الدوري الإسباني</span>
+            <span class="nav-btn">الدوري الإيطالي</span>
+            <span class="nav-btn">دوري أبطال أوروبا</span>
+            <span class="nav-btn">الدوري المغربي</span>
+            <span class="nav-btn">كأس العالم U-20</span>
+          </div>
+        </div>
+
+        <div class="card" id="predictions">
+          <h2>توقعات الغد — من Mazzou Sport (ChatGPT)</h2>
+          <p style="color:var(--muted-text);margin:0 0 10px">تقديم توقعات مبنية على تحليل فني وتكتيكي لكل مباراة. النسب أدناه تم توليدها كمؤشرات احتمالية وليست ضمانًا للنتيجة.</p>
+
+          <table class="prediction-table" id="predTable">
+            <thead>
+              <tr><th>الوقت</th><th>المباراة</th><th>التوقع</th><th>نسبة</th></tr>
+            </thead>
+            <tbody>
+              <!-- sample rows (editable) -->
+              <tr>
+                <td>18:00</td>
+                <td>مانشستر يونايتد vs ليفربول</td>
+                <td>نهاية: 1 - 2 ليفربول</td>
+                <td class="percent">55%</td>
+              </tr>
+              <tr>
+                <td>20:45</td>
+                <td>ريال مدريد vs برشلونة</td>
+                <td>نهاية: 2 - 2 تعادل</td>
+                <td class="percent">48%</td>
+              </tr>
+              <tr>
+                <td>22:00</td>
+                <td>المغرب U-20 vs الأرجنتين U-20</td>
+                <td>نهاية: 1 - 2 الأرجنتين</td>
+                <td class="percent">60%</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top:10px;display:flex;gap:8px">
+            <button onclick="generatePredictions()">تحديث توقعات الغد (من ChatGPT)</button>
+            <button onclick="downloadCSV()">تحميل كملف CSV</button>
+          </div>
+
+          <p style="color:var(--muted-text);font-size:13px;margin-top:10px">ملاحظة: يمكن ربط التنبؤات بقاعدة بيانات أو لوحة تحكم لاحقًا لتحديث تلقائي.</p>
+        </div>
+
+        <div class="card" id="analysis">
+          <h2>تحليل سريع</h2>
+          <p style="color:var(--muted-text)">اختر مباراة من قسم التوقعات وسوف أعرض لك تحليل تكتيكي مفصل، تشكيلات متوقعة ونقاط القوة والضعف.</p>
+          <div style="margin-top:8px">
+            <select id="matchSelect">
+              <option value="mufc_liv">مانشستر يونايتد vs ليفربول</option>
+              <option value="rm_barca">ريال مدريد vs برشلونة</option>
+              <option value="mor_arg">المغرب U-20 vs الأرجنتين U-20</option>
+            </select>
+            <button onclick="showAnalysis()">أعرض التحليل</button>
+          </div>
+          <div id="analysisBox" style="margin-top:10px;color:var(--muted-text)"></div>
+        </div>
+      </section>
+
+      <aside>
+        <div class="card" id="live">
+          <h2>النتائج المباشرة</h2>
+          <p style="color:var(--muted-text);margin:0 0 8px">مربع النتائج المباشرة — يمكنك ربطه بمزود Live Scores (مثل SofaScore / FlashScore) عبر iframe أو API.</p>
+          <div class="live-box" id="liveBox">
+            <!-- Example static live feed (replace with widget/iframe from provider) -->
+            <div style="padding:8px;border-bottom:1px solid #f0f3f8">
+              <div style="font-weight:800">تشيلسي 1 - 0 أستون فيلا</div>
+              <div style="color:var(--muted-text);font-size:13px">45' — تسديدة قوية من بوليسيتش</div>
+            </div>
+            <div style="padding:8px;border-bottom:1px solid #f0f3f8">
+              <div style="font-weight:800">يوفنتوس 0 - 0 إنتر</div>
+              <div style="color:var(--muted-text);font-size:13px">30' — مباراة متكافئة</div>
+            </div>
+          </div>
+
+          <p style="color:var(--muted-text);font-size:13px;margin-top:8px">ملاحظة: لتفعيل التحديث المباشر تلقائيًا استخدم API من مزوّد نتائج مباشرة أو widget قابل للتضمين.</p>
+        </div>
+
+        <div class="card">
+          <h2>روابط سريعة</h2>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <a class="nav-btn" href="#predictions">توقعات الغد</a>
+            <a class="nav-btn" href="#live">المباشر</a>
+            <a class="nav-btn" href="#leagues">الدوريات</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>تواصل معنا</h2>
+          <p style="color:var(--muted-text);margin:0 0 8px">راسلنا عبر: <strong>contact@mazzousport.com</strong></p>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
+        <div>© Mazzou Sport</div>
+        <div style="color:var(--muted-text)">جميع الحقوق محفوظة</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    function doSearch(){
+      var q=document.getElementById('q').value.trim();
+      if(!q) return alert('أدخل اسم الفريق أو المباراة للبحث');
+      alert('بحث تجريبي: "'+q+'" — يمكنك ربط البحث بقاعدة بيانات لاحقًا.');
+    }
+
+    function generatePredictions(){
+      // نموذج توليد توقعات سريع (يمكن استبداله باستدعاء API إلى ChatGPT)
+      var rows = [
+        ['18:00','مانشستر سيتي vs أرسنال','2 - 1 مانشستر سيتي','62%'],
+        ['20:30','برشلونة vs اتليتكو مدريد','1 - 1 تعادل','50%'],
+        ['22:00','المغرب U-20 vs الأرجنتين U-20','1 - 2 الأرجنتين','60%']
+      ];
+      var tbody=document.querySelector('#predTable tbody'); tbody.innerHTML='';
+      rows.forEach(function(r){
+        var tr=document.createElement('tr');
+        r.forEach(function(c){var td=document.createElement('td'); td.innerText=c; tr.appendChild(td)}); tbody.appendChild(tr);
+      });
+      alert('تم تحديث توقعات الغد (تحديث تجريبي).');
+    }
+
+    function downloadCSV(){
+      var rows = [['time','match','prediction','prob']];
+      document.querySelectorAll('#predTable tbody tr').forEach(function(tr){
+        var cols = Array.from(tr.children).map(td=>td.innerText.replace(/,/g,' '));
+        rows.push(cols);
+      });
+      var csv = rows.map(r=>r.join(',')).join('\n');
+      var blob = new Blob([csv], {type: 'text/csv'});
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a'); a.href = url; a.download = 'predictions.csv'; a.click(); URL.revokeObjectURL(url);
+    }
+
+    function showAnalysis(){
+      var v=document.getElementById('matchSelect').value; var box=document.getElementById('analysisBox');
+      if(v==='mufc_liv') box.innerText = 'تحليل: ليفربول يملك تفوق هجومي مع قدرة على استغلال الأطراف؛ يونايتد يعتمد على المرتدات.';
+      if(v==='rm_barca') box.innerText = 'تحليل: كلاسيكو مفتوح؛ السيطرة في الوسط مفتاح النتيجة.';
+      if(v==='mor_arg') box.innerText = 'تحليل: المغرب يعتمد على الدفاع والمرتدات، الأرجنتين تمتلك الأفضلية الهجومية.';
+    }
+  </script>
+</body>
+</html>
